@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <title>e-Payslip Portal – A call to Registration</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #73C2FB;
+      --surface:  #f1f4f7;
+      --border:   #30363d;
+      --accent:   #3fb950;
+      --text:     #020305;
+      --muted:    #8b949e;
+      --danger:   #f85149;
+      --radius:   10px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      background-image:
+        radial-gradient(ellipse 60% 40% at 70% 10%, rgba(63,185,80,.08) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 20% 80%, rgba(88,166,255,.07) 0%, transparent 60%);
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 560px;
+      padding: 2.5rem 2.5rem 2rem;
+      box-shadow: 0 24px 64px rgba(0,0,0,.5);
+      animation: rise .5s cubic-bezier(.22,1,.36,1);
+    }
+
+    .badge::before { content: font-size: .5rem; }
+
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.8rem;
+      line-height: 1.2;
+      margin-bottom: .4rem;
+      color: var(--text);
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: .9rem;
+      margin-bottom: 2rem;
+    }
+
+    label {
+      display: block;
+      font-size: .8rem;
+      font-weight: 600;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: .45rem;
+    }
+
+    input, textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: .95rem;
+      padding: .7rem 1rem;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      resize: none;
+    }
+    input:focus, textarea:focus {
+      border-color: var(--accent2);
+      box-shadow: 0 0 0 3px rgba(88,166,255,.15);
+    }
+    input::placeholder, textarea::placeholder { color: #484f58; }
+
+    .field { margin-bottom: 1.2rem; }
+
+  
+    .tags-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .4rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: .55rem .75rem;
+      cursor: text;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .tags-wrapper:focus-within {
+      border-color: var(--accent2);
+      box-shadow: 0 0 0 3px rgba(88,166,255,.15);
+    }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: .3rem;
+      background: rgba(88,166,255,.12);
+      border: 1px solid rgba(88,166,255,.3);
+      border-radius: 6px;
+      font-size: .82rem;
+      padding: .15rem .55rem;
+      color: var(--accent2);
+      animation: pop .2s ease;
+    }
+   
+    .tag button {
+      background: none; border: none; cursor: pointer;
+      color: var(--accent2); font-size: 1rem; line-height: 1;
+      padding: 0; opacity: .7; transition: opacity .15s;
+    }
+    .tag button:hover { opacity: 1; }
+    #tag-input {
+      border: none; outline: none; background: transparent;
+      color: var(--text); font-size: .9rem; min-width: 160px;
+      flex: 1; padding: .1rem 0;
+    }
+
+    .upload-zone:hover, .upload-zone.drag  {
+      border-color: var(--accent2);
+      background: rgba(67, 136, 215, 0.05);
+      color: var(--text);
+    }
+    .upload-zone.loaded {
+      border-color: rgba(7, 39, 247, 0.5);
+      background: rgba(63,185,80,.05);
+      color: var(--accent);
+    }
+   
+    .preview {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.1rem;
+      font-size: .88rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .preview strong { color: var(--text); }
+
+  
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      width: 100%;
+      padding: .85rem;
+      border: none;
+      border-radius: var(--radius);
+      background: #05b2f6;
+      color: #06090d;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s, transform .15s, box-shadow .2s;
+      margin-top: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn:hover  { background:#05b2f6; box-shadow: 0 4px 20px #05b2f6; }
+    .btn:active { transform: scale(.98); }
+    .btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+
+  
+    .note {
+      display: flex;
+      align-items: flex-start;
+      gap: .6rem;
+      margin-top: 1rem;
+      background: rgba(88,166,255,.07);
+      border: 1px solid rgba(88,166,255,.18);
+      border-radius: var(--radius);
+      padding: .8rem 1rem;
+      font-size: .8rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+   
+    #toast {
+      position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(60px);
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: .75rem 1.4rem;
+      font-size: .88rem; font-weight: 500;
+      display: flex; align-items: center; gap: .5rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,.5);
+      transition: transform .35s cubic-bezier(.22,1,.36,1), opacity .35s;
+      opacity: 0; pointer-events: none; white-space: nowrap;
+    }
+    #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    #toast.success { border-color: rgba(63,185,80,.4); color: var(--accent); }
+    #toast.error   { border-color: rgba(248,81,73,.4);  color: var(--danger); }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <div class="badge">e-Payslip Portal</div>
+  <h1>Registration Email Reminder</h1>
+
+
+  <div class="field">
+    <label for="from">Sender (your email)</label>
+    <input type="email" id="from" placeholder="name@example.com"/>
+  </div>
+
+
+  <div class="field">
+    <label>Select the Recipients File</label>
+    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+      <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" style="color:var(--muted)">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 12V4m0 0L8 8m4-4l4 4"/>
+      </svg>
+      <span id="uploadLabel">Click to upload a <strong>.txt</strong> or <strong>.csv</strong> file</span>
+      <input type="file" id="fileInput" accept=".txt,.csv" style="display:none"/>
+      <p class="subtitle">There should be one email per line or a comma/semicolon to separate the emails or content in the file. You can still add/remove emails manually below.</p>
+    </div>
+  </div>
+
+
+  <div class="field">
+    <label>There are <span id="countBadge" style="display:none"></span></label>
+    <div class="tags-wrapper" id="tags-wrapper">
+      <input id="tag-input" type="email" placeholder="Type an email manually here"/>
+    </div>
+    <p class="subtitle">Press Enter or , to add recepients manually after you have typed the email address. <button onclick="clearAll()" style="background:none;border:none;color:var(--danger);cursor:pointer;font-size:.95rem;padding:0;font-family:inherit">Clear all</button></p>
+  </div>
+
+
+  <div class="field">
+    <label>Message Preview</label>
+    <div class="preview">
+      <strong>Subject:</strong> e-Payslip Portal - A call to Registration<br/><br/>
+      <strong>Body:</strong>Hello,<br/><br/>
+      THIS IS A TEST FROM IAN MAKGABANA. ITS NOT A SPAM - 72101908<br/><br/>
+      Please note that you are not registered on the epayslip portal with this email.<br/><br/>
+      We will be discontinuing emailing services as of 1 August 2026 and so we expect people to access their payslips on the portal.<br/><br/>
+
+      Kindly register on https://epayslip.gov.bw/<br/><br/>
+      1. Scroll down on the disclaimer and click Agree<br/><br/>
+      2. Enter your ID number<br/><br/>
+      3. Confirm with your email address<br/><br/>
+      4. Complete the rest of the information together with password.<br/><br/>
+
+      Keep your login details safe.<br/><br/>
+
+      Regards,<br/><br/>
+      DPSM
+    </div>
+  </div>
+
+  <button class="btn" id="sendBtn" onclick="sendEmails()">
+    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/>
+    </svg>
+    Open in Mail App
+  </button>
+
+  <div class="note">
+    <span>This form uses your device's default mail app to send the emails, they are not sent directly from this page. The mail client will open pre-filled with the context and ready to be sent.</span>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+  const tags = [];
+  const tagInput   = document.getElementById('tag-input');
+  const wrapper    = document.getElementById('tags-wrapper');
+  const fileInput  = document.getElementById('fileInput');
+  const uploadZone = document.getElementById('uploadZone');
+  const uploadLabel= document.getElementById('uploadLabel');
+  const countBadge = document.getElementById('countBadge');
+
+ 
+  uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag'); });
+  uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag'));
+  uploadZone.addEventListener('drop', e => {
+    e.preventDefault();
+    uploadZone.classList.remove('drag');
+    const file = e.dataTransfer.files[0];
+    if (file) processFile(file);
+  });
+
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files[0]) processFile(fileInput.files[0]);
+  });
+
+  function processFile(file) {
+    const allowed = ['text/plain', 'text/csv', 'application/vnd.ms-excel', ''];
+    const reader  = new FileReader();
+    reader.onload = e => {
+      const text   = e.target.result;
+      const chunks = text.split(/[\r\n,;\t]+/).map(s => s.trim()).filter(Boolean);
+      let added = 0, skipped = 0;
+      chunks.forEach(email => {
+        if (!isValidEmail(email))   { skipped++; return; }
+        if (tags.includes(email))   { skipped++; return; }
+        tags.push(email);
+        added++;
+      });
+      renderTags();
+      uploadZone.classList.add('loaded');
+      uploadLabel.innerHTML = `✓ <strong>${file.name}</strong> — ${added} loaded${skipped ? ', ' + skipped + ' skipped' : ''}`;
+      showToast(`✓ ${added} email${added !== 1 ? 's' : ''} loaded from file`, 'success');
+    };
+    reader.onerror = () => showToast('Could not read file', 'error');
+    reader.readAsText(file);
+  }
+
+ 
+  wrapper.addEventListener('click', () => tagInput.focus());
+
+  tagInput.addEventListener('keydown', e => {
+    if (['Enter', ','].includes(e.key)) {
+      e.preventDefault();
+      addTag(tagInput.value.trim().replace(/,$/, ''));
+    }
+    if (e.key === 'Backspace' && !tagInput.value && tags.length) {
+      removeTag(tags.length - 1);
+    }
+  });
+
+  tagInput.addEventListener('blur', () => {
+    if (tagInput.value.trim()) addTag(tagInput.value.trim());
+  });
+
+  function isValidEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
+  function addTag(val) {
+    if (!val) return;
+    if (!isValidEmail(val))  { showToast('Invalid email: ' + val, 'error'); return; }
+    if (tags.includes(val))  { showToast('Already added', 'error'); tagInput.value=''; return; }
+    tags.push(val);
+    renderTags();
+    tagInput.value = '';
+  }
+
+  function removeTag(i) { tags.splice(i, 1); renderTags(); }
+
+  function clearAll() {
+    tags.length = 0;
+    renderTags();
+    uploadZone.classList.remove('loaded');
+    uploadLabel.innerHTML = 'Click to upload a <strong>.txt</strong> or <strong>.csv</strong> file';
+    fileInput.value = '';
+  }
+
+  function renderTags() {
+    document.querySelectorAll('.tag').forEach(el => el.remove());
+    tags.forEach((t, i) => {
+      const span = document.createElement('span');
+      span.className = 'tag';
+      span.innerHTML = `${t}<button onclick="removeTag(${i})" title="Remove">×</button>`;
+      wrapper.insertBefore(span, tagInput);
+    });
+    if (tags.length) {
+      countBadge.textContent = tags.length + ' recipient' + (tags.length !== 1 ? 's' : '');
+      countBadge.style.display = 'inline';
+    } else {
+      countBadge.style.display = 'none';
+    }
+  }
+
+  
+  function sendEmails() {
+    const from    = document.getElementById('from').value.trim();
+    const subject = encodeURIComponent('e-Payslip Portal - A call to Registration');
+    const body    = encodeURIComponent('Hello,\nTHIS IS A TEST FROM IAN MAKGABANA. ITS NOT A SPAM - 72101908\nPlease note that you are not registered on the epayslip portal with this email.We will be discontinuing emailing services as of 1 August 2026 and so we expect people to access their payslips on the portal.\n\nKindly register on https://epayslip.gov.bw/\n1. Scroll down on the disclaimer and click Agree\n2. Enter your ID number\n3. Confirm with your email address\n4. Complete the rest of the information together with password.\n\nKeep your login details safe.\n\nRegards,\nDPSM');
+
+    if (!from)              { showToast('Please enter your email address', 'error'); return; }
+    if (!isValidEmail(from)){ showToast('Enter a valid sender email', 'error'); return; }
+    if (!tags.length)       { showToast('Please enter recipients email', 'error'); return; }
+
+    const to     = tags.join(',');
+    const mailto = `mailto:${to}?subject=${subject}&body=${body}`;
+    window.location.href = mailto;
+    showToast(' Mail client opened!', 'success');
+  }
+
+  function showToast(msg, type = 'success') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = `show ${type}`;
+    setTimeout(() => { t.className = ''; }, 3200);
+  }
+</script>
+</body>
+</html>
